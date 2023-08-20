@@ -31,4 +31,22 @@ const getSingleProduct = async (req,res,next)=>{
     })
 }
 
-module.exports = {getAllProducts,createProduct,getSingleProduct}
+const updateProduct = async (req,res,next) =>{
+    let product = await Product.findById(req.params.id);
+    if(!product){
+        return res.status(404).json({
+            success:false,
+            message:"Product Not Found"
+        })
+    }
+    product = await Product.findByIdAndUpdate(req.params.id,req.body,{
+        runValidators:true,
+        new:true
+    })
+    res.status(201).json({
+        success:true,
+        product
+    })
+}
+
+module.exports = {getAllProducts,createProduct,getSingleProduct,updateProduct}
